@@ -4,15 +4,17 @@ jobs:
   build-mac:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - name: Install Ninja
+        run: brew install ninja
       - name: Clone JUCE
         run: git clone --depth 1 https://github.com/juce-framework/JUCE.git
       - name: Configure
-        run: cmake -B build -G Ninja
+        run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
       - name: Build
-        run: cmake --build build
+        run: cmake --build build --config Release --verbose
       - name: Upload VST3
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: NeonDrive85-VST3
-          path: build/NeonDrive85_artefacts/VST3/
+          path: build/NeonDrive85_artefacts/Release/VST3/
